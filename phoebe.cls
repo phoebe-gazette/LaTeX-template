@@ -9,7 +9,14 @@
 % Fabian Scheuermann
 %
 % For a full change log see the end of this file.
-% See ... for a user guide
+%
+% Contents
+% 1. Basics
+% 2. Title
+% 3. Headings
+% 4. Various packages for math, floats, etc.
+% 5. Bibliography and references
+% 6. Header and Footer
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -24,13 +31,17 @@
 % The Current Maintainer of this work is: Fabian Scheuermann,
 % who can be contacted on f.scheuermann@uni-heidelberg.de
 %
-% This work consists of all the files listed in readme.txt
+
+%--------------------------------------------------------------
+% Load parent class
+%--------------------------------------------------------------
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
-\ProvidesClass{phoebe}[2022/09/12 v0.1 phoebe class]
+\ProvidesClass{phoebe}[2022/09/23 v0.1 phoebe class]
 
 \newcommand{\phoebe}{\raisebox{0.2em}{$\varphi$}h\oe{}be}
+\renewcommand{\phoebe}{Ph\oe{}be}
 
 \PassOptionsToPackage{fleqn}{amsmath} 
 \LoadClass[%
@@ -49,6 +60,33 @@
   numbers      = noenddot,		% no period after numbers (2.1.)
   titlepage    = false
 ]{scrartcl}
+
+%--------------------------------------------------------------
+% 0. Load options
+%--------------------------------------------------------------
+
+\RequirePackage{pgfkeys}
+\RequirePackage{pgfopts}
+
+\newcommand*\phoebe@language{ngerman}
+\newcommand*\phoebe@citestyle{}
+\newcommand*\phoebe@bibstyle{}
+
+\pgfkeys{
+    phoebe/.cd ,
+    language/.code = \renewcommand*\phoebe@language{#1} ,
+    language/.default = ngerman ,
+    citestyle/.default =biblatex-mnras,
+    citestyle/.code = \@phoebe@citestyle ,
+    bibstyle/.default =biblatex-mnras,
+    bibstyle/.code = \@phoebe@bibstyle 
+}
+
+\ProcessPgfOptions{/phoebe}
+
+%--------------------------------------------------------------
+% 1. Basics
+%--------------------------------------------------------------
 
 % prevent Widows and orphans under all circumstances
 \clubpenalty = 100000
@@ -73,7 +111,7 @@
 %\RequirePackage{libertine}
 
 % language/hyphenation
-\RequirePackage[ngerman,english]{babel}   
+\RequirePackage[\phoebe@language]{babel}   
 \RequirePackage{csquotes}
 % hyphenation words with a dash (use \-/)
 \usepackage[shortcuts]{extdash}
@@ -90,179 +128,22 @@
   letterspace=80,
 ]{microtype}
 
-
-
-%\setmainfont{MinionPro-Regular.otf}[
-%    BoldFont = MinionPro-Bold.otf ,
-%    ItalicFont = MinionPro-It.otf ,
-%    BoldItalicFont = MinionPro-BoldIt.otf ]
-
-
 \KOMAoptions{DIV=calc}   % recalculate Satzspiegel with new font
-
 
 % colors
 \RequirePackage[table]{xcolor} 			% specifying colors 
 
-% some nice colors
+% use the corporate design colors of Heidelberg University
 \definecolor{uhdred}{RGB}{197, 13, 41}
 \definecolor{darkred}{RGB}{90, 15, 20}
 \definecolor{sand}{RGB}{245, 240, 234}
+\definecolor{linkblue}{RGB}{78, 121, 167}
+\definecolor{citegreen}{RGB}{89, 161, 78}
+\definecolor{refred}{RGB}{225, 87, 89}
 
 %--------------------------------------------------------------
 % 2. Title
 %--------------------------------------------------------------
-
-%\renewcommand{\maketitle}{}
-
-
-%--------------------------------------------------------------
-% 3. headings (part, chapter, section etc.)
-%--------------------------------------------------------------
-
-% font for all headings 
-\setkomafont{section}{\centering\large\scshape\lsstyle\lowercase}
-\setkomafont{subsection}{\centering\large\itshape}
-\setkomafont{disposition}{\rmfamily\normalfont}
-
-% this is for the colored version
-%\setkomafont{section}{\sffamily\color{uhdred}\bfseries\centering\large}
-%\setkomafont{subsection}{\color{uhdred}\bfseries\centering\large\itshape}
-%\setkomafont{disposition}{\rmfamily\normalfont}
-
-%--------------------------------------------------------------
-% 6. Math related packages and new commands
-%--------------------------------------------------------------
-
-\RequirePackage[fleqn]{amsmath}
-\setlength\mathindent{15pt}
-
-\RequirePackage{amsfonts,amssymb}    
-
-
-
-% package for units 
-\RequirePackage{siunitx}
-
-\sisetup{%
-    per-mode=reciprocal,
-	exponent-product = \cdot ,
-	inter-unit-product = {\;},
-	range-units = single,
-	separate-uncertainty = true,
-    uncertainty-separator =  {\,}, 
-	multi-part-units=single}
-	
-	
-	
-\RequirePackage{graphicx}    	% including pictures
-
-\RequirePackage{listings}       % include source code
- 
- \definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    language=[LaTeX]TeX,
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-
-\lstset{style=mystyle}
- 
-\RequirePackage[font=small,labelfont={sc,color=black},hypcap=false]{caption}
-
-
-% alternatively: justification=raggedright,format=plain
-% position in KOMA is controled by tablecaptionsabove
-\captionsetup[figure]{
-  name=figure,
-  position=below,               % tell caption where to insert skip
-  justification=justified,      % left aligned
-  singlelinecheck=false,        % even left aligned if only one line
-  format=hang                   % 
-}
-
-\captionsetup[table]{
-  name=table,
-  position=above,               % tell caption where to insert skip
-  justification=justified,      % left aligned
-  singlelinecheck=false,        % even left aligned if only one line
-  format=hang,                  % 
-  belowskip=10pt                % extra space between table and caption
-}
-
-
-
-% tables
-\RequirePackage{booktabs,		% nicer tables
-	            multirow,		% multiple rows in table
-	            array			% create special columns 	
-	           }      
-	           
-%--------------------------------------------------------------
-% 8. bibliography and references
-%--------------------------------------------------------------
-	           
-% maxnames: if more authors than is truncated to minnames
-\RequirePackage[
-                backend=biber,
-                style=biblatex-mnras,
-                hyperref=true,
-                ]{biblatex}
-                
-\RequirePackage{hyperref}			% for links and references
-
-\hypersetup{				% setup the hyperref-package options
-	plainpages=false,		% 	-
-	linktoc=page,			%	- 
-	colorlinks=true,		% 	- colorize links?
-	linkcolor=blue,	        %	-
-    citecolor=blue,         % 	-
-    urlcolor=magenta,		%	-
-	pdfborder={0 0 0},		% 	-
-	breaklinks=true,			% 	- allow line break inside links
-	bookmarksnumbered=true,	%
-	bookmarksopen=true,		%
-	bookmarksdepth=2
-}
-
-
-%--------------------------------------------------------------
-% 9. Header and Footer
-%--------------------------------------------------------------
-
-\usepackage{scrlayer-scrpage}
-
-\lehead[\pagemark]{\pagemark\quad{\itshape\runauthor}}
-\rohead[\upshape \textsc{doi}: \href{http://dx.doi.org/\doinum}{\doinum}]{{\itshape\runtitle}\quad\pagemark}
-\cohead[\upshape \thepubdate]{}
-\lohead[\upshape \href{www.phoebe-gazette.de}{\phoebe}]{}
-
-\lefoot[]{}
-\rofoot[\pagemark]{}
-
-
-%--------------------------------------------------------------
-% 10. Commands for the title
-%--------------------------------------------------------------
-
 
 \let\oldtitle\title
 \let\oldauthor\author 
@@ -299,7 +180,17 @@
 
 \date{}
 	
-\newcommand\doi[1]{\def\doinum{#1}}
+\newcommand\doi[1][]{\ifthenelse{\equal{#1}{}}{%
+\def\thedoi{please insert \textsc{doi}}%
+}{%
+\def\thedoi{\textsc{doi}: \href{http://dx.doi.org/#1}{#1}}%
+}}
+
+%\newcommand\email[1][]{\ifthenelse{\equal{#1}{}}{%
+%\def\theemail{corresponding author}%
+%}{\def\theemail{#1}}
+\newcommand{\email}[1]{\def\theemail{#1}}
+
 \newcommand\pubdate[1]{\def\thepubdate{#1}}
 
 \newcommand{\defabstract}[1]{\newcommand\abstracttext{#1}}
@@ -316,6 +207,144 @@
 ]}
 
 
+%--------------------------------------------------------------
+% 3. headings (part, chapter, section etc.)
+%--------------------------------------------------------------
+
+% font for all headings 
+\setkomafont{section}{\centering\large\scshape\lsstyle\lowercase}
+\setkomafont{subsection}{\centering\large\itshape}
+\setkomafont{disposition}{\rmfamily\normalfont}
+
+% this is for the colored version
+%\setkomafont{section}{\sffamily\color{uhdred}\bfseries\centering\large}
+%\setkomafont{subsection}{\color{uhdred}\bfseries\centering\large\itshape}
+%\setkomafont{disposition}{\rmfamily\normalfont}
+
+%--------------------------------------------------------------
+% 4. Various packages for math, floats, etc.
+%--------------------------------------------------------------
+
+\RequirePackage[fleqn]{amsmath}
+\setlength\mathindent{15pt}
+
+\RequirePackage{amsfonts,amssymb}    
+
+% package for units 
+\RequirePackage{siunitx}
+
+\sisetup{%
+    per-mode=reciprocal,
+	exponent-product = \cdot ,
+	inter-unit-product = {\;},
+	range-units = single,
+	separate-uncertainty = true,
+    uncertainty-separator =  {\,}, 
+	multi-part-units=single}
+	
+\RequirePackage{graphicx}    	% including pictures
+
+\RequirePackage{listings}       % include source code
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    language=[LaTeX]TeX,
+    backgroundcolor=\color{sand},   
+    commentstyle=\color{citegreen},
+    keywordstyle=\color{uhdred},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    %numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+ 
+\RequirePackage[font=small,labelfont={sc,color=black},hypcap=false]{caption}
+
+
+% alternatively: justification=raggedright,format=plain
+% position in KOMA is controled by tablecaptionsabove
+\captionsetup[figure]{
+  name=figure,
+  position=below,               % tell caption where to insert skip
+  justification=justified,      % left aligned
+  singlelinecheck=false,        % even left aligned if only one line
+  format=hang                   % 
+}
+
+\captionsetup[table]{
+  name=table,
+  position=above,               % tell caption where to insert skip
+  justification=justified,      % left aligned
+  singlelinecheck=false,        % even left aligned if only one line
+  format=hang,                  % 
+  belowskip=10pt                % extra space between table and caption
+}
+
+% tables
+\RequirePackage{booktabs,		% nicer tables
+	            multirow,		% multiple rows in table
+	            array			% create special columns 	
+	           }      
+	           
+%--------------------------------------------------------------
+% 5. bibliography and references
+%--------------------------------------------------------------
+	           
+% maxnames: if more authors than is truncated to minnames
+\RequirePackage[
+                backend=biber,
+                style=biblatex-mnras,
+                hyperref=true,
+                natbib=true
+                ]{biblatex}
+                
+\RequirePackage{hyperref}			% for links and references
+
+\hypersetup{				% setup the hyperref-package options
+	plainpages=false,		% 	-
+	linktoc=page,			%	- 
+	colorlinks=true,		% 	- colorize links?
+	linkcolor=linkblue,	    %	-
+    citecolor=citegreen,    % 	-
+    urlcolor=refred,		%	-
+	pdfborder={0 0 0},		% 	-
+	breaklinks=true,			% 	- allow line break inside links
+	bookmarksnumbered=true,	%
+	bookmarksopen=true,		%
+	bookmarksdepth=2
+}
+
+
+%--------------------------------------------------------------
+% 6. Header and Footer
+%--------------------------------------------------------------
+
+
+\usepackage{scrlayer-scrpage}
+
+\lehead[\pagemark]{\pagemark\quad{\itshape\runauthor}}
+\rohead[\upshape \thedoi]{{\itshape\runtitle}\quad\pagemark}
+\cohead[\upshape \thepubdate]{}
+\lohead[\upshape \href{www.phoebe-gazette.de}{\phoebe-Gazette}]{}
+
+\lefoot[]{}
+\rofoot[\pagemark]{}
+\lofoot[\footnotesize\upshape ${}^\dag$ E-mail: \href{mailto:\theemail}{\theemail}]{}
 
 %--------------------------------------------------------------
 % Change log
