@@ -1,6 +1,6 @@
 % template for Phoebe
 %
-\documentclass{phoebe}
+\documentclass[language=english]{phoebe}
 
 % ---------------------------------------------------------------------
 % Place your own packages here 
@@ -17,15 +17,16 @@
 % Define some variables
 % ---------------------------------------------------------------------
 
-\title[\LaTeX\ template \& style guide]{\phoebe\ -- Gazette Heidelberger Physik Studenten: \\\LaTeX\ template \& style guide} 
-\author[F. Scheuermann \& C. Otte]{Fabian Scheuermann \and Christoph Otte}
-\doi{10.1093/mnras/stac110}
+\title[\LaTeX\ template \& style guide]{\phoebe\ -- Gazette für Studentische Physik: \\\LaTeX\ template \& style guide} 
+\author[F. Scheuermann \& C. Otte]{Fabian Scheuermann$^\dag$ \and Christoph Otte}
+\email{f.scheuermann@uni-heidelberg.de}
+\doi{}
 \pubdate{2022.09.23}
 
  % load file with bibliography
 \addbibresource{paper.bib}  
 
-\defabstract{This is some text. \blindtext}
+\defabstract{Every article is required to include an abstract. This should be a short summary of the content with the most important results. It should be no longer than 250 words. This document is is part of the official \LaTeX\ template for Phoebe. Included are a few examples on how to include equations, figures or tables.}
 
 % ---------------------------------------------------------------------
 % The main Document
@@ -46,48 +47,78 @@
 % ---------------------------------------------------------------------
 
 
-\section{ToDo}
-
-Here is a list of things that need to be changed
-\begin{itemize}
-    \item Change the author and title macro to allow for a running title and running author (used in the header).
-    \item Add affiliations to the authors?
-    \item Center Abstract heading
-    \item Footnote for corresponding author. 
-\end{itemize}
-
-here is a list of nice looking journals
-\begin{itemize}
-    \item \href{https://www.tatup.de/index.php/tatup/issue/view/173/180}{Zeitschrfit für Technikfolgenabschätzung in Theorie und Praxis (TATuP)}
-\end{itemize}
-
 \section{Introduction}
+Phoebe is an open access journal that aims to give physics students the opportunity to document their personal gain in knowledge for themselves and others. Many exciting discussions, e.g. during breaks of lectures, which allow a deeper understanding, are usually only caught by a small part of the students. Until now, there has unfortunately been no way to record these insights in the long term and make them available to others. This is where Phoebe wants to start and promote a broader discourse.
 
-The quick brown fox jumps over the lazy dog
+This is the official \LaTeX\ template for the \emph{Phoebe Gazette}\footnote{\url{www.phoebe-gazette.de}}. A copy can be obtained from
+\begin{center}
+    \url{https://github.com/phoebe-gazette/LaTeX-template}
+\end{center}
+We recommend to use \href{https://www.overleaf.com?r=4714e231&rm=d&rs=b}{overleaf.com} to edit your \LaTeX documents. Here is a small example on how to use it
+\begin{lstlisting}
+\documentclass{phoebe}
 
-\Blindtext
+% define some variables
+\title[Running title]{The main title} 
+\author[Running author]{John Doe}
+\doi{will be filled out by the journal}
+\pubdate{will be filled out by the journal}
+
+% file with references
+\addbibresource{paper.bib}  
+
+\defabstract{A short summary of the content.}
+
+\begin{document}
+
+% your text goes here
+
+\end{document}
+\end{lstlisting}
+
+The following sections are a showcase how to include certain things.
 
 \section{Examples}
 
+\subsection{Hypen and dash}
+A hypen (single \verb|-|) is used to combine words (e.g.~low-density). The en-dash (two \verb|--|) is slightly larger and is used to indicate ranges (e.g.~\SIrange{2}{10}{\kg}). The en-dash is identical in length to the minus sign. When in math mode, \LaTeX will automatically use a minus sign when a single \verb|-| is used.
+
+\subsection{Quotes}
+It is strongly recommended to make use of \texttt{csquotes} as \enquote{This package provides advanced facilities for inline and display quotations}. Should you decide to write your article in english, you should load the document class with the \texttt{english} option.
+
+\begin{lstlisting}
+\documentclass[language=english]{phoebe}
+\end{lstlisting}
+
+\subsection{Units}
+
+Please make use of the \texttt{siunitx} package (already loaded with this class). This takes care that units are correctly typesetted. 
+
 \subsection{Math mode}
 
-Here is a formula
-\begin{equation}
-    y = \int_0^\infty \frac{1}{x^2}\, \mathrm{d}x.
+A one-line formula should use the \texttt{equation} environment
+\begin{equation}\label{eq:example}
+    y = \int_1^\infty \frac{1}{x^2}\, \mathrm{d}x.
 \end{equation}
-They should always be punctuated. 
+And equations should always be punctuated. If the formula consists of multiple lines, the \texttt{align} environment enables aligning the equations
+\begin{align}
+    y &= \int_1^\infty \frac{1}{x^2}\, \mathrm{d}x \\
+    &= \left. -\frac{1}{x}\right|_1^\infty \\
+    &= 0 + 1 = 1
+\end{align}
+The differential of the variable is written in roman (\verb|\mathrm{d}|) and not italics.
 
 \subsection{Figures and Tables}
 
-In Figure~\ref{fig:example} and Table~\ref{tab:example} we show an example for a figure and a table respectively. 
+In Figure~\ref{fig:example} and Table~\ref{tbl:example} we show an example for a figure and a table respectively. 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\columnwidth]{baryon_cycle}
-    \caption{This is an example for a figure}
+    \includegraphics[width=0.8\columnwidth]{tex}
+    \caption{This is an example for a figure.}
     \label{fig:example}
 \end{figure}
 
-
+For tables, they should have no vertical lines. The caption for tables should be above the table.
 \begin{table}
     \centering
     \caption{This is an example for a table}
@@ -97,69 +128,32 @@ In Figure~\ref{fig:example} and Table~\ref{tab:example} we show an example for a
         2 & B \\
         3 & C \\\bottomrule
     \end{tabular}
-    \label{tab:example}
+    \label{tbl:example}
 \end{table}
-
-\Blindtext
 
 \subsection{Examples for code}
 
-\begin{lstlisting}
-\begin{figure}
-    \centering
-    \includegraphics{figure.jpg}
-    \label{fig:my_label}
-\end{figure}
+To include code in a text, the \texttt{verbatim} environment is often used to set the text. This sets the exactly like it is typed, i.e.\ it ignores \LaTeX\ commands. A better way for tpyesetting code is with the \texttt{listings} package. It supports a number of programming and provides code highlighting for them.
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig,ax=plt.subplots()
+
+x = np.linspace(0,2*np.pi)
+
+for i in np.range(1,4):
+    y = np.sin(i*x)
+    ax.plot(x,y)
+plt.show()
 \end{lstlisting}
 
-\subsection{Citations}
+\subsection{Citations and references}
 
-How to cite other papers. \cite{Adamo+2017,Anand+2021a}
+References in the text should be written as Figure~\ref{fig:example}, Table~\ref{tbl:example} and Equation~\ref{eq:example}. This class uses \texttt{biblatex} and \texttt{biber} to manage the bibliography. Therefore, to cite another paper in the text use \verb|\textcite| which produces \textcite{Adamo+2017} or to cite one in parentheses use \verb|parencite| which yields \parencite{Anand+2021a}.
 
-\Blindtext
-
-\subsection{Lists}
-
-\begin{itemize}
-    \item First item
-    \item Second item
-    \item Third item
-\end{itemize}
-
-\Blindtext
-
-\section{Something new}
-
-\Blindtext
-
-\section{and another}
-
-\Blindtext 
-
-\section{what}
-
-\Blindtext 
-
-\section{here}
-
-\Blindtext 
-
-\section{Finally}
-
-\Blindtext
-
-\section{A few more}
-
-\Blindtext 
-
-\section{Can you see it?}
-
-\Blindtext
-
-Dieses Template ist frei verfügbar
-\begin{center}
-    \url{https://github.com/phoebe-gazette/LaTeX-template}
-\end{center}
+\section{Summary}
+Happy \TeX{}ing
 
 % ---------------------------------------------------------------------
 % Backmatter
