@@ -46,7 +46,7 @@
 \PassOptionsToPackage{fleqn}{amsmath} 
 \LoadClass[%
   paper        = a4,	   	   	% select paper size
-  fontsize     = 11pt,		   	% font size
+  fontsize     = 10pt,		   	% font size
   BCOR         = 0mm,		   	% add space for binding
   twoside      = true,			% oneside or twoside printing
   twocolumn    = true,
@@ -104,8 +104,9 @@
 % we use kpfonts(similar to Palatino)
 \RequirePackage[
     oldstylenums,
+    oldstyle,
     largesmallcaps,
-    nosf
+    uprightgreeks
     ]{kpfonts}
 %\usepackage{newpxtext}
 %\RequirePackage{libertine}
@@ -141,9 +142,13 @@
 \definecolor{citegreen}{RGB}{89, 161, 78}
 \definecolor{refred}{RGB}{225, 87, 89}
 
+% balance the columns on the last page
+\usepackage{flushend}
+
 %--------------------------------------------------------------
 % 2. Title
 %--------------------------------------------------------------
+
 
 \let\oldtitle\title
 \let\oldauthor\author 
@@ -178,7 +183,153 @@
 	}
 	}
 
-\date{}
+% 
+% the following code is copied from the MNRAS style
+% 
+
+\newskip\@indentskip
+\newskip\smallindent
+\newskip\@footindent
+\newskip\@leftskip
+\@indentskip=18pt
+\smallindent=1.5em
+\@footindent=\smallindent
+\@leftskip=\z@
+
+\setlength\leftmargini{   \z@ }
+\setlength\leftmarginii{  1em }
+\setlength\leftmarginiii{ 1em }
+\setlength\leftmarginiv{  1em }
+\setlength\leftmarginv{  1pc }
+\setlength\leftmarginvi{  1pc }
+\setlength\leftmargin{\leftmargini}
+\setlength\labelsep{ 0.5em}
+\labelwidth\leftmargini\advance\labelwidth-\labelsep
+
+\def\maketitle{\par
+ \begingroup
+  \if@twocolumn
+   \twocolumn[\vspace*{2.5em}\@maketitle]
+  \else
+   \newpage
+   \global\@topnum\z@
+   \@maketitle
+  \fi
+  %\thispagestyle{titlepage}
+ \endgroup
+ \let\maketitle\relax
+ \let\@maketitle\relax
+ \gdef\@author{}
+ \gdef\@title{}
+ \let\thanks\relax
+}
+\def\newauthor{%                       DE's definitions
+  \end{tabular}\par
+  \begin{tabular}[t]{@{}l@{}}\let\\=\author@nextline%
+}
+\def\and{%
+  \end{tabular}\vskip 3pt\par
+  \begin{tabular}[t]{@{}l@{}}\let\\=\author@nextline%
+}
+\def\@maketitle{\newpage
+ \vspace*{7pt}
+ {\raggedright \sloppy
+  {\centering\reset@font\huge \@title \par}
+  \vskip 2em
+  {\reset@font\Large
+   \begin{tabular}[t]{@{}l@{}}\let\\=\author@nextline\@author
+   \end{tabular}
+   \par}
+  \vskip 1.em
+ }                          %End of DE's definitions
+ \par\noindent
+ {\reset@font\small \@date \par}
+ \vskip 2em
+}
+
+\def\author@nextline{          %DE's definition
+\tabularnewline[-7pt]\reset@font\scriptsize\itshape\ignorespaces
+\let\\=\author@nextline}       %let command added by NT to bring
+                               % subsequent lines into correct format
+
+\def\abstract{\if@twocolumn
+   \start@SFBbox\@abstract
+ \else
+   \@abstract
+ \fi}
+\def\endabstract{\if@twocolumn
+   \endlist\finish@SFBbox
+ \else
+  \endlist
+ \fi}
+\def\@abstract{\list{}{%
+    \listparindent
+    \itemindent\z@
+    \labelwidth\z@ \labelsep\z@
+    \leftmargin \rightmargin\z@
+    \parsep 0pt plus 1pt}\item[]%
+    \addsec*{Abstract}
+} % SFB 0.1.01
+
+%
+\newif\ifSFB@keywords
+\def\keywords{\if@twocolumn
+  \start@SFBbox\@keywords
+ \else
+ \par\noindent
+ {\reset@font\small \@keywords \par}
+ \fi
+}
+\def\@keywords{\list{}{%
+    \labelwidth\z@ \labelsep\z@
+    \leftmargin 11pc\rightmargin\z@  % was 11pc\right....
+    \parsep 0pt plus 1pt}\item[]\reset@font{\scshape keywords: }%
+}
+\def\endkeywords{\if@twocolumn
+  \endlist\addvspace{2em plus 0.5\baselineskip}\finish@SFBbox
+ \else
+  \endlist
+ \fi
+ \@thanks
+ \gdef\@thanks{}
+ \SFB@keywordstrue
+}
+\def\nokeywords{\ifSFB@keywords\else
+ \if@twocolumn \start@SFBbox\addvspace{37pt}\finish@SFBbox \fi
+ \@thanks
+ \gdef\@thanks{}\fi
+}
+
+\def\author@tabular{\def\@halignto{}\@authortable}
+\let\endauthor@tabular=\endtabular
+%
+\def\author@tabcrone{\vspace{2pt}{\ifnum0=`}\fi%
+  \@xtabularcr[-7pt]\reset@font\small\it
+  \let\\=\author@tabcrtwo\ignorespaces}
+%
+\def\author@tabcrtwo{{\ifnum0=`}\fi\@xtabularcr[-7pt]\reset@font\small\it
+ \let\\=\author@tabcrtwo\ignorespaces}
+%
+\def\@authortable{\leavevmode \hbox \bgroup $\let\@acol\@tabacol
+ \let\@classz\@tabclassz \let\@classiv\@tabclassiv
+ \let\\=\author@tabcrone\ignorespaces \@tabarray}
+
+\def\start@SFBbox{\@next\@currbox\@freelist{}{}%
+ \global\setbox\@currbox
+ \vbox\bgroup
+  \hsize \textwidth
+  \@parboxrestore
+}
+\def\finish@SFBbox{\par\vskip -\dbltextfloatsep
+  \egroup
+  \global\count\@currbox\tw@
+  \global\@dbltopnum\@ne
+  \global\@dbltoproom\maxdimen\@addtodblcol
+  \global\vsize\@colht
+  \global\@colroom\@colht
+}
+
+% and some additional variables
 	
 \newcommand\doi[1][]{\ifthenelse{\equal{#1}{}}{%
 \def\thedoi{please insert \textsc{doi}}%
@@ -192,20 +343,6 @@
 \newcommand{\email}[1]{\def\theemail{#1}}
 
 \newcommand\pubdate[1]{\def\thepubdate{#1}}
-
-\newcommand{\defabstract}[1]{\newcommand\abstracttext{#1}}
-
-\renewcommand\maketitle{
-\twocolumn[
-  \oldmaketitle
-  \begin{@twocolumnfalse}
-  \begin{abstract}
-    \addsec*{Abstract}
-    \abstracttext
-  \end{abstract}
-  \end{@twocolumnfalse}
-]}
-
 
 %--------------------------------------------------------------
 % 3. headings (part, chapter, section etc.)
@@ -345,6 +482,13 @@
 \lefoot[]{}
 \rofoot[\pagemark]{}
 \lofoot[\footnotesize\upshape ${}^\dag$ E-mail: \href{mailto:\theemail}{\theemail}]{}
+
+%--------------------------------------------------------------
+% others
+%--------------------------------------------------------------
+
+\def\bsp{\vspace{0.5cm}\reset@font\footnotesize\noindent This paper
+has been typeset from a \TeX/\LaTeX\ file prepared by the author.}
 
 %--------------------------------------------------------------
 % Change log

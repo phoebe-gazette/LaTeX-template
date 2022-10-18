@@ -17,21 +17,28 @@
 % Define some variables
 % ---------------------------------------------------------------------
 
-\title[\LaTeX\ template \& style guide]{\phoebe\ -- Gazette für Studentische Physik: \\\LaTeX\ template \& style guide} 
-\author[F. Scheuermann \& C. Otte]{Fabian Scheuermann$^\dag$ \and Christoph Otte}
+\title[\LaTeX\ template \& style guide]{\phoebe\ -- Gazette for student physics: \\\LaTeX\ template \& style guide} 
+\author[F. Scheuermann \& C. Otte]{
+Fabian Scheuermann,$^{1\dag}$
+Christoph Otte$^{2}$
+\\
+$^{1}$Astronomisches Rechen-Institut, Zentrum f\"{u}r Astronomie der Universit\"{a}t Heidelberg, M\"{o}nchhofstra\ss e 12-14, 69120 Heidelberg, Germany, \\
+$^{2}$Universitätsbibliothek Heidelberg, Plöck 107-109, 69117 Heidelberg, Germany
+}
+
+%
 \email{f.scheuermann@uni-heidelberg.de}
 \doi{}
+\date{Accepted XXX. Received YYY; in original form ZZZ}
 \pubdate{2022.09.23}
 
  % load file with bibliography
 \addbibresource{paper.bib}  
 
-\defabstract{Every article is required to include an abstract. This should be a short summary of the content with the most important results. It should be no longer than 250 words. This document is is part of the official \LaTeX\ template for Phoebe. Included are a few examples on how to include equations, figures or tables.}
 
 % ---------------------------------------------------------------------
 % The main Document
 % ---------------------------------------------------------------------
-
 
 \begin{document}
 
@@ -40,7 +47,16 @@
 % Frontmatter
 % ---------------------------------------------------------------------
 
+\thispagestyle{plain}
 \maketitle
+
+\begin{abstract}
+Every article is required to include an abstract. This should be a short summary of the content with the most important results. It should be no longer than 250 words. This document is is part of the official \LaTeX\ template for Phoebe. Included are a few examples on how to include equations, figures or tables.
+\end{abstract}
+
+\begin{keywords}
+Journal -- typography -- \LaTeX 
+\end{keywords}
 
 % ---------------------------------------------------------------------
 % Main Body of the article
@@ -76,12 +92,28 @@ We recommend to use \href{https://www.overleaf.com?r=4714e231&rm=d&rs=b}{overlea
 \end{document}
 \end{lstlisting}
 
-The following sections are a showcase how to include certain things.
+This document is organised as follows: Section~\ref{sec:typography} gives some general typography rules and Section~\ref{sec:latex} provides some examples on how to use this class. 
 
-\section{Examples}
+\section{Frontmatter}
+
+The titlepage with title, author list and abstract is handled by the document class. Simply change the commands from this template.
+
+
+\section{Typography}\label{sec:typography}
+
+% we follow the Monthly Notice style guide
+% https://academic.oup.com/mnras/pages/general_instructions?login=true#6%20Style%20guide
+
+This section provides some guidelines on how the article should be formatted. Many of them are already implemented in the class file and the authors do not need to worry about them.
+
+\subsection{Layout}\label{sec:layout}
+
+The article should be typesetted with \LaTeX\ in a two-column layout. Use \verb|\section{}| and \verb|\subsection{}| to structure your document. 
 
 \subsection{Hypen and dash}
-A hypen (single \verb|-|) is used to combine words (e.g.~low-density). The en-dash (two \verb|--|) is slightly larger and is used to indicate ranges (e.g.~\SIrange{2}{10}{\kg}). The en-dash is identical in length to the minus sign. When in math mode, \LaTeX will automatically use a minus sign when a single \verb|-| is used.
+A hypen (single \verb|-|) is used to combine words (e.g.~low-density). The en-dash (two \verb|--|) is slightly larger and is used to indicate ranges (e.g.~\SIrange{2}{10}{\kg}). The en-dash is identical in length to the minus sign. When in math mode, \LaTeX will automatically use a minus sign when a single \verb|-| is used. em-dashes (\verb|---|) should not be used in the journal.
+
+\LaTeX assumes that a period marks the end of a sentence and as such puts a bit of extra space after it. This is wrong if the period is used in an abbreviation, e.g.\ i.e. To avoid this, place a space (\verb|e.g.\ |) after the period. In the previous example, the abbreviation period also marks the end of the sentence. In such case only one period is required. 
 
 \subsection{Quotes}
 It is strongly recommended to make use of \texttt{csquotes} as \enquote{This package provides advanced facilities for inline and display quotations}. Should you decide to write your article in english, you should load the document class with the \texttt{english} option.
@@ -90,11 +122,10 @@ It is strongly recommended to make use of \texttt{csquotes} as \enquote{This pac
 \documentclass[language=english]{phoebe}
 \end{lstlisting}
 
-\subsection{Units}
-
-Please make use of the \texttt{siunitx} package (already loaded with this class). This takes care that units are correctly typesetted. 
 
 \subsection{Math mode}
+
+Vectors are are set in bold (no arrow). 
 
 A one-line formula should use the \texttt{equation} environment
 \begin{equation}\label{eq:example}
@@ -108,20 +139,36 @@ And equations should always be punctuated. If the formula consists of multiple l
 \end{align}
 The differential of the variable is written in roman (\verb|\mathrm{d}|) and not italics.
 
+\subsection{Units}
+
+Variables are set in italics (this happens automatic in math mode), however units are always roman (upright). They should be separated by a non-breaking space. For reciprocal units, use a superscript, e.g.\ $\si{\cm\per\s}$. Use either SI or cgs units.
+
+Please make use of the \texttt{siunitx} package (already loaded with this class) as it takes care of the aforementioned rules. If you need a unit that is not already defined, you can define your own units like so
+\begin{lstlisting}
+\DeclareSIUnit\parsec{pc}
+\end{lstlisting}
+
+The axis of plots must have the according unit. This should be written as $x\,/\,\si{\cm}$. Note that commonly found notation $x\,[\si{\cm}]$ is not acceptable. Square brackets denote the unit of a quantity (just like value is denoted by curly brackets), i.e.\ $x=
+\{x\}[x]$. Take the example $x=\SI{12}{\cm}$, i.e.~$[x]=\si{\cm}$. For more details, see section 7 of the \href{https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values}{NIST Guide to the SI}.
+
+\section{\LaTeX}\label{sec:latex}
+
+Here are a few tips and tricks on how to use \LaTeX.
+
 \subsection{Figures and Tables}
 
 In Figure~\ref{fig:example} and Table~\ref{tbl:example} we show an example for a figure and a table respectively. 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\columnwidth]{tex}
-    \caption{This is an example for a figure.}
+    \caption{This is an example for a figure. The caption is below the image. Credit: \url{https://tug.org/}.}
     \label{fig:example}
 \end{figure}
 
 For tables, they should have no vertical lines. The caption for tables should be above the table.
 \begin{table}
     \centering
-    \caption{This is an example for a table}
+    \caption{This is an example for a table. The caption is above the table.}
     \begin{tabular}{cc}\toprule
         Column 1  & Column 2 \\\midrule
         1 & A \\
@@ -149,8 +196,14 @@ plt.show()
 \end{lstlisting}
 
 \subsection{Citations and references}
+The citations and bibliography should use the \emph{Harvard author (year)} style. 
+This class uses \texttt{biblatex} and \texttt{biber} to manage the bibliography. Therefore, to cite another paper in the text use \verb|\textcite| which produces \textcite{Scheuermann+2022} or to cite one in parentheses use \verb|parencite| which yields \parencite{Kreckel+2020}. You can also use the \texttt{natbib} commands (even though natbib is not used) like \verb|\citep| which results in \citep{Emsellem+2022,Lee+2022,Leroy+2021b}.
 
-References in the text should be written as Figure~\ref{fig:example}, Table~\ref{tbl:example} and Equation~\ref{eq:example}. This class uses \texttt{biblatex} and \texttt{biber} to manage the bibliography. Therefore, to cite another paper in the text use \verb|\textcite| which produces \textcite{Adamo+2017} or to cite one in parentheses use \verb|parencite| which yields \parencite{Anand+2021a}.
+I would recommend \textsc{jabref} to manage your \verb|.bib| file.
+
+Using \verb|\label{}| and \verb|\ref{}| to cross-reference within the paper is preferred to explicitly writing out the references as \texttt{hyperref} will create links. 
+References in the text should be written as Figure~\ref{fig:example}, Table~\ref{tbl:example} and Equation~\ref{eq:example}.
+
 
 \section{Summary}
 Happy \TeX{}ing
@@ -162,10 +215,9 @@ Happy \TeX{}ing
 
 \printbibliography[title = {References}]
 
-
 % ---------------------------------------------------------------------
 % End of the Document
 % ---------------------------------------------------------------------
 
-
+\bsp	% typesetting comment
 \end{document}
