@@ -1,0 +1,329 @@
+\documentclass[language=english]{phoebe}
+
+\title{Phoebe's Official LaTeX Template \& Style Guide v0.1}
+\author{Christoph Otte, Fabian Scheuermann}
+\date{\today}
+\email{phoebe@uni-heidelberg.de}
+\keywords{Phoebe, LaTeX, Template}
+\abstract{Every article is required to include an abstract. This should be a short summary of the content with the most important results. It should be no longer than 250 words. This document is part of the official \LaTeX\ template for Phoebe. Included are a few examples on how to include equations, figures or tables.}
+
+% ---------------------------------------
+% Place your own packages here
+% ---------------------------------------
+\usepackage{tensor}
+\usepackage{blindtext}
+
+% ---------------------------------------
+% Place your own commands here
+% ---------------------------------------
+\newcommand{\set}[2]{\left\{#1 \;\middle|\; #2\right\}}
+
+ % load file with bibliography
+\addbibresource{references.bib}
+
+\begin{document}
+
+% ---------------------------------------
+% Front matter
+% ---------------------------------------
+
+\maketitle
+
+% ---------------------------------------
+% Main body of the article
+% ---------------------------------------
+
+\section{Introduction}
+Phoebe is an open access journal that aims to give physics students the opportunity to document their personal gain in knowledge for themselves and others. Many exciting discussions, e.g. during breaks of lectures, which allow a deeper understanding, are usually only caught by a small part of the students. Until now, there has unfortunately been no way to record these insights in the long term and make them available to others. This is where Phoebe wants to start and promote a broader discourse.
+
+
+\section{General Instructions}
+
+\subsection{Getting started}
+
+\begin{lstlisting}
+\documentclass[language=english]{phoebe}
+
+% define some variables
+\title{}
+\author{Jane Doe}
+\date{\today}
+\email{phoebe@uni-heidelberg.de}
+\keywords{Phoebe, LaTeX, Template}
+\abstract{}
+
+ % load file with bibliography
+\addbibresource{references.bib}
+
+\begin{document}
+
+\maketitle
+
+% your text goes here.
+
+\printbibliography
+
+\end{document}
+\end{lstlisting}
+
+
+\subsection{Article Length}
+
+The article should be 2--5 pages with this template. 
+In special cases an article can be longer...
+
+\subsection{Abstract}
+Please add a short abstract of 250 words of less. The abstract should provide the reader with a rough overview of the article's content. Usually, the text includes information about the context, methods and results and makes a few closing remarks.
+
+\subsection{LaTeX Packages}
+If you need more packages please add them to the preamble. Please do not alter the class file. In case of compiling errors please contact \href{mailto:phoebe@uni-heidelberg.de}{phoebe@uni-heidelberg.de}.
+
+\section{Typography}
+This section provides some guidelines on how the article should be formatted. Many of them are already implemented in the class file and the authors do not need to worry about them.
+
+\subsection{Punctuation}
+
+missing...
+
+\subsection{New Paragraphs}
+If you want to start a new paragraph, you could either use the \TeX\ command \verb|\par| or leave a blank line (this has the same effect). The commonly used \verb|\\| has a different effect, depending on the environment and only starts a new line. It should therefore be avoided.
+
+\subsection{Headings}
+
+Only sections and subsections are allowed. Please do not use subsubsections.
+
+\subsection{Hyphen and Dash}
+A hyphen (single \verb|-|) is used to combine words (e.g.~low-density). The en-dash (two \verb|--|) is slightly larger and is used to indicate ranges (e.g.~this month we publish 2--5 articles). The en-dash is identical in length to the minus sign. When in math mode, \LaTeX will automatically use a minus sign when a single \verb|-| is used. em-dashes (\verb|---|) should not be used in the journal.
+
+\LaTeX\ assumes that a period marks the end of a sentence and as such puts a bit of extra space after it. This is wrong if the period is used in an abbreviation, e.g.\ \enquote{i.e.} To avoid this, place a space (\verb|e.g.\ |) after the period. In the previous example, the abbreviation period also marks the end of the sentence. In such case only one period is required.
+
+\subsection{Quotation Marks}
+It is strongly recommended to make use of \lstinline{csquotes} as \enquote{This package provides advanced facilities for inline and display quotations}. Should you decide to write your article in english, you should load the document class with the \lstinline{english} option.
+
+\subsection{Units}
+Variables are set in italics (this happens automatic in math mode), however units are always roman (upright). They should be separated by a non-breaking space. For reciprocal units, use a superscript, e.g.\ $\si{\cm\per\s}$. Use either SI or cgs units.
+
+Please make use of the \lstinline{siunitx} package (already loaded with this class) as it takes care of the aforementioned rules. If you need a unit that is not already defined, you can define your own units like so
+\begin{lstlisting}
+\DeclareSIUnit\parsec{pc}
+\end{lstlisting}
+
+The axis of plots must have the according unit. This should be written as $x\,/\,\si{\cm}$. Note that commonly found notation $x\,[\si{\cm}]$ is not acceptable. Square brackets denote the unit of a quantity (just like value is denoted by curly brackets), i.e.\ $x=
+\{x\}[x]$. Take the example $x=\SI{12}{\cm}$, i.e.~$[x]=\si{\cm}$. For more details, see section 7 of the \href{https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values}{NIST Guide to the SI}.
+
+\subsection{Hyperlinks and URLs}
+\begin{lstlisting}
+\url{phoebe.pubpub.org}
+\href{phoebe.pubpub.org}{Phoebe}
+\end{lstlisting}
+
+Please use \lstinline{\url} for writing blank URLs, e.g.\ \url{https://phoebe.pubpub.org}, and \lstinline{\href} if you want to write a description instead, e.g.\ \href{https://phoebe.pubpub.org}{Phoebe}. URLs without \lstinline{https://} won't usually work.
+
+Sections, equations, figures and tables can be referenced by using \lstinline{label} and \lstinline{ref} commands.
+
+\begin{lstlisting}
+\section{Methods}
+\label{sec:methods}
+
+See \ref{sec:methods} for the methods.
+\end{lstlisting}
+
+The value inside \lstinline{label} is completely arbitrary, however, there are some conventions you might follow:
+\begin{table}
+	\centering
+    \caption{Conventions for labelling objects in \LaTeX.}
+	\begin{tabular}{ll}
+		\toprule
+		Convention & Object \\
+		\midrule
+		\texttt{sec} & Section \\
+		\verb|ssec| & Subsection \\
+		\verb|eq| & Equation \\
+		\verb|fig| & Figure \\
+		\verb|tab| & Table \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Math}
+
+\subsection{Equations}
+
+\begin{lstlisting}
+\begin{equation}
+\int_{-\infty}^{+\infty}e^{-x^2}\mathrm{d}x=\sqrt{\pi}
+\end{equation}
+\end{lstlisting}
+
+\begin{equation}
+\int_{-\infty}^{+\infty}e^{-x^2}\mathrm{d}x=\sqrt{\pi}
+\end{equation}
+
+\begin{lstlisting}
+\begin{align}
+
+\end{align}
+\end{lstlisting}
+
+Equations should always be punctuated. Vectors are are set in bold (no arrow).
+
+\subsection{Differentials}
+
+\begin{lstlisting}
+\frac{\mathrm{d}f(x)}{\mathrm{d}x}
+\end{lstlisting}
+
+\begin{equation}
+\frac{\mathrm{d}f(x)}{\mathrm{d}x}
+\end{equation}
+
+\subsection{Cases}
+
+\begin{lstlisting}
+f(n) = \begin{cases}
+  n/2  & n \text{ is even} \\
+  3n+1 & n \text{ is odd}
+\end{cases}
+\end{lstlisting}
+
+\begin{equation}
+f(n) = \begin{cases}
+  n/2  & n \text{ is even} \\
+  3n+1 & n \text{ is odd}
+\end{cases}\end{equation}
+
+\subsection{Matrices}
+
+\begin{lstlisting}
+\begin{pmatrix}
+  0 & 1 \\
+  1 & 0
+\end{pmatrix}
+\end{lstlisting}
+
+\begin{equation}
+\begin{pmatrix}
+  0 & 1 \\
+  1 & 0
+\end{pmatrix}
+\end{equation}
+
+\section{Figures and Tables}
+
+Here is an example how to include a Figure. If you feel the need to use subfigures, go for it!
+
+
+\begin{lstlisting}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{tex.jpg}
+	\caption{This is an example for a figure. The caption is below the image. Credit: \url{https://tug.org/}.}
+\label{fig:example} 
+\end{figure}
+\end{lstlisting}
+
+
+% I have the feeling this only confuses people who want to use the template
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.8\columnwidth]{tex}
+%    \caption{This is an example for a figure. The caption is below the image. Credit: \url{https://tug.org/}.}
+%    \label{fig:example}
+%\end{figure}
+
+And here is an example for a table
+
+\begin{lstlisting}
+\begin{table}
+	\begin{center}
+		\caption{Your caption goes here.}
+		\setlength\defaultaddspace{0.5em}
+		\begin{tabularx}{\columnwidth}{ll}
+			\toprule
+			Column 1 & Column 2 \\
+			\midrule
+			A & 1 \\
+			B & 2 \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+\end{table}
+\end{lstlisting}
+
+\begin{table}[t]
+	\begin{center}
+		\caption{Some Shakespeare's plays.}
+		\setlength\defaultaddspace{0.5em}
+		\begin{tabularx}{\columnwidth}{lll}
+			\toprule
+			Title & Type & Year \\
+			\midrule
+			A Midsummer Night's Dream & Comedy & 1594 \\
+			Romeo and Juliet & Tragedy & 1595 \\
+			Much Ado About Nothing & Comedy & 1599 \\
+			Hamlet & Tragedy & 1601 \\
+			Henry VIII & History & 1613 \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\section{Bibliography}
+
+We use \verb|biblatex| with \verb|biber| as the backend for the references. 
+The file with the entries should be loaded before the main document starts with \verb|\addbibresource{filename.bib}|. 
+There are two main citation commands: for in-line citations use \verb|\citet{}| and for citations in parantheses use \verb|\citep{}|.
+
+\begin{lstlisting}
+@Article{phoebe2023,
+    author
+}
+\end{lstlisting}
+
+See \cite{ahrens2017}.
+
+\begin{lstlisting}
+@Book{ahrens2017,
+    author = {{Ahrens}, Söhnke},
+    title = {{Das Zettelkasten-Prinzip}},
+    year = {2017},
+    publisher = {BoD -- Books on Demand}
+}
+
+@Book{Osterbrock+2006,
+  author    = {{Osterbrock}, Donald E. and {Ferland}, Gary J.},
+  publisher = {University Science Books},
+  title     = {{Astrophysics of gaseous nebulae and active galactic nuclei}},
+  year      = {2006},
+  adsnote   = {Provided by the SAO/NASA Astrophysics Data System},
+  adsurl    = {https://ui.adsabs.harvard.edu/abs/2006agna.book.....O},
+}
+\end{lstlisting}
+
+% ---------------------------------------
+% Back matter
+% ---------------------------------------
+
+\printbibliography
+
+\appendix 
+
+\section{Additional packages}
+
+Here is a list of additional packages that you might find useful
+\begin{itemize}
+    \item \texttt{tensor}
+    \item \texttt{pgf}
+\end{itemize}
+
+%\newpage
+% to test out new fonts
+%\section{Fonts}
+
+%{\sffamily \blindtext}
+
+%{\rmfamily \blindtext}
+
+%\texttt{\blindtext}
+
+\end{document}
